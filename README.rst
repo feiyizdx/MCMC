@@ -18,7 +18,7 @@ markov
      :alt: Updates
 
 .. image:: https://codecov.io/gh/xinbian/langevin_dynamics/branch/master/graph/badge.svg
-     :target: https://codecov.io/gh/xinbian/langevin_dynamics
+     :target: https://codecov.io/gh/xinbian/markov/
 
 
 Markov Chain Monte Carlo Project
