@@ -18,7 +18,7 @@ markov
      :alt: Updates
 
 
-markov chain monte carlo project
+Markov Chain Monte Carlo Project
 
 
 * Free software: MIT license
