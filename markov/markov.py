@@ -45,6 +45,12 @@ distance(a, b)
 a=0
 b=4
 distance(a, b)
+a=1
+b=4
+distance(a, b)
+a=3
+b=4
+distance(a, b)
 
 #generate spanning tree
 #T=nx.minimum_spanning_tree(FG)
@@ -56,40 +62,46 @@ distance(a, b)
 #otherwise. The probality of adding or removing is 0.5.
 
 #write add edge function
-add=True
-a=random.randint(0,4)
-b=random.randint(0,4)
-while a==b:
-    b=random.randint(0,4)
-while(add):   
+def add_func(): 
+  add=True
+  a=random.randint(0,m-1)
+  b=random.randint(0,m-1)
+  while a==b:
+    b=random.randint(0,m-1)
+  while(add):   
     if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):
-      a=random.randint(0,4)
-      b=random.randint(0,4)
+      a=random.randint(0,m-1)
+      b=random.randint(0,m-1)
       while a==b:
-        b=random.randint(0,4)
+        b=random.randint(0,m-1)
       add=True
     else:    
       distance(a,b)
       add=False
+  return None
       
-#write cut eddge function
+#write cut edge function
+nx.draw(FG, with_labels=True)
+plt.show()
 cut=True 
-a=random.randint(0,4)
-b=random.randint(0,4)
-while a==b:
-    b=random.randint(0,4) 
 while(cut):   
-    if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):
-      a=random.randint(0,4)
-      b=random.randint(0,4)
-      while a==b:
-        b=random.randint(0,4) 
-      cut=True
-    else:    
-    # FG.remove_edge(a,b)
-     # FG.remove_edge(b,a)
-      cut=False    
-test=nx.minimum_edge_cut(FG)
+    a=random.randint(0,m-1)
+    b=random.randint(0,m-1)
+    while a==b:
+        b=random.randint(0,m-1)  
+    if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):           
+      FG.remove_edge(a,b)
+      if nx.is_connected(FG):
+             cut=False
+      else:            
+             distance(a,b)
+             cut=True
+    else:         
+      cut=True  
+
+print nx.edge_connectivity(FG, 4,0)
+
+
 
 
 labels={}
@@ -104,11 +116,12 @@ edge_labels =dict([((u, v), d['label'])
 
 plt.show()
 
+#calculate stationary probality function
 weight_1=r*FG.size(weight='weight')
 weight_2=0.0
-for i in range(m):
-    weight_2=weight_2+nx.shortest_path_length(FG,source=0,target=i, weight='weight')
-theta=weight_1+weight_2
+#for i in range(m):
+#    weight_2=weight_2+nx.shortest_path_length(FG,source=0,target=i, weight='weight')
+#theta=weight_1+weight_2
 
 
 ####unit test
