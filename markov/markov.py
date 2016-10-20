@@ -5,10 +5,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
+import sys
 #generate 2d grid
 #m nodes
 m=5
 r=2.0
+istep=2
 nxx, nyy = (m,m)
 x = np.linspace(0, m-1, nxx)
 y = np.linspace(0, m-1, nyy)
@@ -45,13 +47,10 @@ distance(a, b)
 a=0
 b=4
 distance(a, b)
-a=1
-b=4
-distance(a, b)
-a=3
-b=4
-distance(a, b)
 
+print FG.number_of_edges()
+nx.draw(FG, with_labels=True)
+plt.show()
 #generate spanning tree
 #T=nx.minimum_spanning_tree(FG)
 #span_tree=sorted(T.edges(data=True))
@@ -81,27 +80,63 @@ def add_func():
   return None
       
 #write cut edge function
-nx.draw(FG, with_labels=True)
-plt.show()
-cut=True 
-while(cut):   
-    a=random.randint(0,m-1)
-    b=random.randint(0,m-1)
-    while a==b:
-        b=random.randint(0,m-1)  
-    if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):           
-      FG.remove_edge(a,b)
-      if nx.is_connected(FG):
+
+def cut_func():
+    cut=True
+    while(cut):      
+      a=random.randint(0,m-1)
+      b=random.randint(0,m-1)
+      while a==b:
+         b=random.randint(0,m-1)  
+      if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):           
+         FG.remove_edge(a,b)
+         if nx.is_connected(FG):
              cut=False
-      else:            
+         else:            
              distance(a,b)
              cut=True
-    else:         
-      cut=True  
+      else:         
+         cut=True  
+         
+         
+#print nx.edge_connectivity(FG, 4,0)
+         
+#the function checks if the graph can be cut // if it cannot, meaning we can only add an edge
+def check_min():
+  minmum=True
+  for a, b in FG.edges():
+     FG.remove_edge(a,b)
+     if nx.is_connected(FG):
+        minmum=False
+     distance(a,b)
+  return minmum
 
-print nx.edge_connectivity(FG, 4,0)
+#main loop
 
-
+i=0
+while i<istep:
+   #cannot cut case
+ 
+  if check_min()==True:
+    prob= 1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
+    add_func()
+    
+   #cannot add case
+  elif FG.number_of_edges()==m*(m-1)/2:
+    prob= 1.0/(m*(m-1)/2.0)
+    cut_func()
+   #choose add cut randomly
+  else:
+    a=random.randint(0,1)
+    if a==1:
+        add_func()
+    else:
+        cut_func()
+  i=i+1
+  #output test
+ # nx.draw(FG, with_labels=True)
+ # plt.show()
+            
 
 
 labels={}
@@ -135,6 +170,7 @@ class Test_markov(unittest.TestCase):
     #test shortest path length
      def test_len(self):
          self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
+
          
         
 tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
