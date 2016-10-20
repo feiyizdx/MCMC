@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import unittest
+import random
 #generate 2d grid
 #m nodes
 m=5
@@ -20,7 +21,7 @@ test=xrange[4]
 #define weights function
 def cacl_weights(x_1, y_1, x_2, y_2):
     return np.sqrt((x_1-x_2)**2+(y_1-y_2)**2)
-#add edge function. add an edge from nodes a and b
+#define add edge function. add an edge from nodes a and b
 def distance(a, b):
     dist=cacl_weights(xv[xrange[a],yrange[a]], yv[xrange[a],yrange[a]],xv[xrange[b],yrange[b]], yv[xrange[b],yrange[b]])
     FG.add_weighted_edges_from([(a,b,dist)],label=str(dist))
@@ -38,25 +39,37 @@ b=2
 #distance=cacl_weights(xv[xrange[a],yrange[a]], yv[xrange[a],yrange[a]],xv[xrange[b],yrange[b]], yv[xrange[b],yrange[b]])
 #FG.add_weighted_edges_from([(a,b,distance)],label=str(distance))
 distance(a, b)
-a=1
+a=0
 b=3
 distance(a, b)
 a=0
 b=4
 distance(a, b)
-a=3
-b=4
-distance(a, b)
-a=2
-b=4
-distance(a, b)
-a=2
-b=3
-distance(a, b)
 
 #generate spanning tree
-T=nx.minimum_spanning_tree(FG)
-span_tree=sorted(T.edges(data=True))
+#T=nx.minimum_spanning_tree(FG)
+#span_tree=sorted(T.edges(data=True))
+
+#proposal probality 
+#if the graph cannot add cut any edges. The probality of adding an edge is 1. 
+#else if the graph cannot add any more edges. The probality of removing an edge is 1.
+#otherwise. The probality of adding or removing is 0.5.
+
+#write add adge function
+print FG.edges()
+add=True
+a=random.randint(0,4)
+b=random.randint(0,4)
+while a==b:
+    b=random.randint(0,4)
+while(add):   
+    if ((a,b) or (a,b)) in FG.edges():
+      add=True
+    else:    
+      distance(a,b)
+      add=False
+    
+
 
 
 labels={}
@@ -75,7 +88,7 @@ weight_1=r*FG.size(weight='weight')
 weight_2=0.0
 for i in range(m):
     weight_2=weight_2+nx.shortest_path_length(FG,source=0,target=i, weight='weight')
-
+theta=weight_1+weight_2
 
 
 ####unit test
