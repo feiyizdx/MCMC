@@ -55,21 +55,41 @@ distance(a, b)
 #else if the graph cannot add any more edges. The probality of removing an edge is 1.
 #otherwise. The probality of adding or removing is 0.5.
 
-#write add adge function
-print FG.edges()
+#write add edge function
 add=True
 a=random.randint(0,4)
 b=random.randint(0,4)
 while a==b:
     b=random.randint(0,4)
 while(add):   
-    if ((a,b) or (a,b)) in FG.edges():
+    if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):
+      a=random.randint(0,4)
+      b=random.randint(0,4)
+      while a==b:
+        b=random.randint(0,4)
       add=True
     else:    
       distance(a,b)
       add=False
-    
-
+      
+#write cut eddge function
+cut=True 
+a=random.randint(0,4)
+b=random.randint(0,4)
+while a==b:
+    b=random.randint(0,4) 
+while(cut):   
+    if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):
+      a=random.randint(0,4)
+      b=random.randint(0,4)
+      while a==b:
+        b=random.randint(0,4) 
+      cut=True
+    else:    
+    # FG.remove_edge(a,b)
+     # FG.remove_edge(b,a)
+      cut=False    
+test=nx.minimum_edge_cut(FG)
 
 
 labels={}
