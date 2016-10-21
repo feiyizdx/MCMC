@@ -8,7 +8,8 @@ test_markov
 Tests for `markov` module.
 """
 
-import pytest
+import sys
+import unittest
 
 
 from markov import markov
