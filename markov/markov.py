@@ -56,7 +56,7 @@ plt.show()
 #span_tree=sorted(T.edges(data=True))
 
 #proposal probality 
-#if the graph cannot add cut any edges. The probality of adding an edge is 1. 
+#if the graph cannot cut any edges. The probality of adding an edge is 1. 
 #else if the graph cannot add any more edges. The probality of removing an edge is 1.
 #otherwise. The probality of adding or removing is 0.5.
 
