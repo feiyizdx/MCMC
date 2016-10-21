@@ -50,7 +50,7 @@ distance(a, b)
 
 print FG.number_of_edges()
 nx.draw(FG, with_labels=True)
-plt.show()
+#plt.show()
 #generate spanning tree
 #T=nx.minimum_spanning_tree(FG)
 #span_tree=sorted(T.edges(data=True))
@@ -151,7 +151,7 @@ edge_labels =dict([((u, v), d['label'])
                    for u, v, d in FG.edges(data=True)])
 
 
-plt.show()
+#plt.show()
 
 #calculate stationary probality function
 weight_1=r*FG.size(weight='weight')
