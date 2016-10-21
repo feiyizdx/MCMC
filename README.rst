@@ -18,8 +18,9 @@ markov
      :alt: Updates
 
 
-[![Coverage Status]
-(https://coveralls.io/repos/github/xinbian/markov/badge.svg?branch=master)](https://coveralls.io/github/xinbian/markov?branch=master)
+.. image:: https://coveralls.io/repos/github/xinbian/markov/badge.svg?branch=master
+      :target: https://coveralls.io/github/xinbian/markov?branch=master
+
 
 Markov Chain Monte Carlo Project
 
