@@ -48,7 +48,7 @@ a=0
 b=4
 distance(a, b)
 
-print FG.number_of_edges()
+#print FG.number_of_edges()
 nx.draw(FG, with_labels=True)
 #plt.show()
 #generate spanning tree
@@ -134,7 +134,7 @@ while i<istep:
     else:
         cut_func()
   i=i+1
-  print FG.number_of_edges()
+  #print FG.number_of_edges()
   #output test
  # nx.draw(FG, with_labels=True)
  # plt.show()
