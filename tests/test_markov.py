@@ -14,7 +14,7 @@ import unittest
 
 from markov import markov
 
-class Testmarkov(unittest.markov):
+class Testmarkov(unittest.TestCase):
 
     def setUp(self):
         pass
