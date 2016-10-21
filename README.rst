@@ -18,7 +18,7 @@ markov
      :alt: Updates
 
 
-.. image:: https://coveralls.io/repos/github/xinbian/markov/badge.svg?branch=master
+.. image:: https://coveralls.io/repos/github/xinbian/markov/badge.png?branch=master
       :target: https://coveralls.io/github/xinbian/markov?branch=master
 
 
