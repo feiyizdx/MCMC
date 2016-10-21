@@ -15,7 +15,11 @@ env:
 - TOXENV=py33
 - TOXENV=py27
 - TOXENV=py26
-install: pip install -U tox networkx numpy matplotlib
+install: 
+- pip install -U tox 
+- pip install numpy
+- pip install networkx 
+- pip install matplotlib
 language: python
 python: 3.5
 script: tox -e ${TOXENV}
