@@ -10,7 +10,7 @@ import sys
 #m nodes
 m=5
 r=2.0
-istep=2
+istep=200
 nxx, nyy = (m,m)
 x = np.linspace(0, m-1, nxx)
 y = np.linspace(0, m-1, nyy)
@@ -125,6 +125,7 @@ while i<istep:
   elif FG.number_of_edges()==m*(m-1)/2:
     prob= 1.0/(m*(m-1)/2.0)
     cut_func()
+    
    #choose add cut randomly
   else:
     a=random.randint(0,1)
@@ -133,6 +134,7 @@ while i<istep:
     else:
         cut_func()
   i=i+1
+  print FG.number_of_edges()
   #output test
  # nx.draw(FG, with_labels=True)
  # plt.show()
