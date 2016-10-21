@@ -31,5 +31,5 @@ script:
 
   - nosetests --with-cov --cov-config .coveragerc --cover-html
 
-ter_success:
+after_success:
  - bash <(curl -s https://codecov.io/bash)
