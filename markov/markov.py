@@ -11,11 +11,12 @@ import sys
 m=5
 r=2.0
 istep=200
+#generate 2D grid, dx=dy=1
 nxx, nyy = (m,m)
 x = np.linspace(0, m-1, nxx)
 y = np.linspace(0, m-1, nyy)
 xv, yv = np.meshgrid(x, y)
-#pick up 5 points as vertex #0 (0,0) #1 (1,2) #2 (2,3) #3 (3,1) #4 (4,4)
+#pick up 5 points as vertex e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
 xrange=[0, 1, 1, 3, 4]
 yrange=[0, 2, 3, 2, 4]
 
@@ -32,7 +33,6 @@ def distance(a, b):
 FG=nx.Graph()
 #genereate intial graph
 #a, b denotes the index of different points/vertex can read from a file
-#read connections from input file
 a=0
 b=1
 distance(a, b)
