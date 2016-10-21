@@ -49,7 +49,7 @@ b=4
 distance(a, b)
 
 #print FG.number_of_edges()
-nx.draw(FG, with_labels=True)
+#nx.draw(FG, with_labels=True)
 #plt.show()
 #generate spanning tree
 #T=nx.minimum_spanning_tree(FG)
@@ -145,7 +145,7 @@ labels={}
 for i in range(5):
     labels[i]=str(i)
     
-nx.draw(FG, with_labels=True)
+#nx.draw(FG, with_labels=True)
 
 edge_labels =dict([((u, v), d['label']) 
                    for u, v, d in FG.edges(data=True)])
