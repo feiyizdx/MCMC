@@ -17,9 +17,11 @@ markov
      :target: https://pyup.io/repos/github/xinbian/markov/
      :alt: Updates
 
-.. image:: https://codecov.io/gh/xinbian/langevin_dynamics/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/xinbian/markov/branch/master/graph/badge.svg
      :target: https://codecov.io/gh/xinbian/markov/
 
+.. image:: https://coveralls.io/repos/github/xinbian/markov/badge.svg?branch=master
+        :target: https://coveralls.io/github/xinbian/markov?branch=master
 
 Markov Chain Monte Carlo Project
 
