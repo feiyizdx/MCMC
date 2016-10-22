@@ -49,8 +49,8 @@ b=4
 distance(a, b)
 
 #print FG.number_of_edges()
-#nx.draw(FG, with_labels=True)
-#plt.show()
+nx.draw(FG, with_labels=True)
+plt.show()
 #generate spanning tree
 #T=nx.minimum_spanning_tree(FG)
 #span_tree=sorted(T.edges(data=True))
@@ -111,6 +111,18 @@ def check_min():
      distance(a,b)
   return minmum
 
+#define function that counts the edges cannot be cut
+def check_nocut():
+    nocut=0
+    for (a, b) in FG.edges():
+        FG.remove_edge(a,b)
+        if nx.is_connected(FG):
+            pass
+        else:
+            nocut=nocut+1
+        distance(a, b)
+    return nocut
+
 #main loop
 
 i=0
@@ -130,11 +142,14 @@ while i<istep:
   else:
     a=random.randint(0,1)
     if a==1:
+        prob= 1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
         add_func()
     else:
+        totaledge = FG.number_of_edges()
+        prob = 1.0/(totaledge-check_nocut())
         cut_func()
   i=i+1
-  #print FG.number_of_edges()
+  print FG.number_of_edges()
   #output test
  # nx.draw(FG, with_labels=True)
  # plt.show()
@@ -145,13 +160,13 @@ labels={}
 for i in range(5):
     labels[i]=str(i)
     
-#nx.draw(FG, with_labels=True)
+nx.draw(FG, with_labels=True)
 
 edge_labels =dict([((u, v), d['label']) 
                    for u, v, d in FG.edges(data=True)])
 
 
-#plt.show()
+plt.show()
 
 #calculate stationary probality function
 weight_1=r*FG.size(weight='weight')
@@ -172,7 +187,8 @@ class Test_markov(unittest.TestCase):
     #test shortest path length
      def test_len(self):
          self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
-
+     def test_propprob(self):
+         self.assertlessEqual(prob, 1.0)
          
         
 tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
