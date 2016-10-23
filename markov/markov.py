@@ -25,7 +25,7 @@ m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=2
+istep=3000
 #temperature
 T=10
 
@@ -179,9 +179,11 @@ def check_nocut():
     return nocut
 
 
-#main loop, starts form i=0
-i=0
-#expected edges number
+#####################main loop, starts form i=0
+i=1
+#iniital expected number of edges connected to 0
+expc_edgeto0=len(FG.neighbors(0))
+#initialexpected edges number
 expc_edges=1.0*FG.number_of_edges()
 #calculate initial theta. tmp stores last step theta
 tmp=calc_weight()
@@ -260,20 +262,31 @@ while i<istep:
   tmp=calc_weight()
   #step increment
   i=i+1
+  nx.draw(FG, with_labels=True)
+  plt.show()
   print FG.number_of_edges()
+  #cacluate the edges connected to 0 over all graphs
+  expc_edgeto0=expc_edgeto0+len(FG.neighbors(0))
   #cacluate the sum of edges over all graphs
   expc_edges=expc_edges+1.0*FG.number_of_edges()
 
 
+##########end of main loop
+
+
+
+
+#calculate edges connected to 0 by averaging over all graphs
+expc_edgeto0=expc_edgeto0/i
+#calculate the expected edges number by averaging over all graphs
 expc_edges=expc_edges/i
 labels={}
 for i in range(5):
     labels[i]=str(i)
-    
-nx.draw(FG, with_labels=True)
-plt.show()
-#output final graph
 
+#output final graph  
+#nx.draw(FG, with_labels=True)
+#plt.show()
 
 
 ####unit test
