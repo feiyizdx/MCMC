@@ -281,7 +281,7 @@ class Test_markov(unittest.TestCase):
      def test_len(self):
          self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
      def test_prop_prob(self):
-         self.assertlessEqual(prop_prob, 1.0)
+         self.assertLessEqual(prop_prob, 1.0)
          
         
 tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)

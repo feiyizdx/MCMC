@@ -27,7 +27,10 @@ Markov Chain Monte Carlo Project
 
 * Free software: MIT license
 * Documentation: https://markov.readthedocs.io.
-
+How to use
+--------
+* run the code  /markov/markov.py
+* the input parameters are steps: nstep, weights realted parameter T and r, total nodes number: m, the :
 
 Features
 --------
