@@ -35,6 +35,13 @@ How to use
 Features
 --------
 
+Proposal probality
+--------
+* If the graph is disconnected by cutting any edges. the probality of adding an edge is 1. 
+* If the graph cannot add any more edges, the probality of removing an edge is 1.
+* Otherwise. The probality of adding or removing is 0.5.
+
+
 * TODO
 
 Credits
