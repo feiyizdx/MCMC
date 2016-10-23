@@ -71,10 +71,12 @@ a=3
 b=4
 distance(a, b)
 
-print FG.number_of_edges()
+#print FG.number_of_edges()
 
 nx.draw(FG, with_labels=True)
 plt.show()
+
+#output inital graph
 
 
 #proposal probality 
@@ -252,11 +254,7 @@ while i<istep:
   tmp=calc_weight()
   #step increment
   i=i+1
-  print FG.number_of_edges()
-  #output test
- # nx.draw(FG, with_labels=True)
- # plt.show()
-            
+  #print FG.number_of_edges()
 
 
 labels={}
@@ -265,14 +263,7 @@ for i in range(5):
     
 nx.draw(FG, with_labels=True)
 plt.show()
-
-edge_labels =dict([((u, v), d['label']) 
-                   for u, v, d in FG.edges(data=True)])
-
-
-
-plt.show()
-
+#output final graph
 
 
 
