@@ -30,7 +30,7 @@ Markov Chain Monte Carlo Project
 How to use
 --------
 * run the code  /markov/markov.py
-* the input parameters are steps: nstep, weights realted parameter T and r, total nodes number: m, the :
+* the input parameters are steps (nstep), weights realted parameter T and r (T, r), total nodes number (m), the nodes number, coordinate used in the 2-D grid (m, xrange, yrange).
 
 Features
 --------
