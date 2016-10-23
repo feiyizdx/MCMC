@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
 # this is a code of MCMC
+########
+#proposal probality 
+#if the graph cannot cut any edges. The probality of adding an edge is 1. 
+#if the graph cannot add any more edges. The probality of removing an edge is 1.
+#otherwise. The probality of adding or removing is 0.5.
+########
+#to use the code, you need to specify total nodes m
+#positions of these nodes in a 2d grid
+#total steps, istep
+#weights realted paramters r, T.
+
 import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
@@ -7,29 +18,60 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
-import sys
 
-#generate 2d grid
-#intial parameters. m nodes
+
+#intial parameters. m nodes/grid size
 m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=200
+istep=2
 #temperature
 T=10
 
-#generate 2D grid, dx=dy=1
-nxx, nyy = (m,m)
-x = np.linspace(0, m-1, nxx)
-y = np.linspace(0, m-1, nyy)
-xv, yv = np.meshgrid(x, y)
+#define a class that generates a 2D grid,size=m*, dx=dy=1, x, y start from 0
+class init_grid(object):
+    def __init__(self, nodes):
+        self.nodes = m
+    #generate grid
+    def generate(self):
+        self.nxx, self.nyy = (self.nodes, self.nodes)
+        self.x = np.linspace(0, self.nodes-1, self.nxx)
+        self.y = np.linspace(0, self.nodes-1, self.nyy)
+        self.xv, self.yv = np.meshgrid(self.x, self.y)
+    #used to define node/vertex index in a grid
+    #pick up m points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
+    #xrange denotes nodes' x index in the grid
+    #yrange denotes nodes' y index in the grid
+    def coord(self, xrange, yrange):
+        self.xrange=xrange
+        self.yrange=yrange
 
-#pick up 5 points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
-xrange=[0, 1, 1, 3, 4]
-yrange=[0, 2, 3, 2, 4]
+class calc_distance(object):
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+    def distance(self, a_xcoord, a_ycoord, b_xcoord, b_ycoord):
+        self.dist=np.sqrt((a_xcoord-b_xcoord)**2+(a_ycoord-b_ycoord)**2)
+        FG.add_weighted_edges_from([(self.a,self.b,self.dist)],label=str(self.dist))
+    
+       
+#genernate a m*m 2d grid
+init=init_grid(m)
+init.generate() 
+#pick up m points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
+init.coord([0,1,1,3,4],[0,2,3,2,4])
+#xrange denotes node's x index in the grid
+#yrange denotes node's y index in the grid
+xrange=init.xrange
+yrange=init.yrange
+#xv, yv are the grid coordines
+xv=init.xv
+yv=init.yv
+
 
 #define weights function. the function can calculate two points distance when given coordinates
+#x_1,y_1, x_2,y_2 are x,y coordintes of two points
 def cacl_weights(x_1, y_1, x_2, y_2):
     return np.sqrt((x_1-x_2)**2+(y_1-y_2)**2)
     
@@ -41,52 +83,14 @@ def distance(a, b):
     
 #genereate intial graph FG
 FG=nx.Graph()
-#this generete an edge between node a and node b,a, b denotes the index of different points
-a=0
-b=1
-distance(a, b)
-a=0
-b=2
-distance(a, b)
-a=0
-b=3
-distance(a, b)
-a=0
-b=4
-distance(a, b)
-a=1
-b=4
-distance(a, b)
-a=1
-b=3
-distance(a, b)
-a=1
-b=2
-distance(a, b)
-a=2
-b=4
-distance(a, b)
-a=2
-b=3
-distance(a, b)
-a=3
-b=4
-distance(a, b)
-
-#print FG.number_of_edges()
-
+#initial graph. this generete an edge between node a and node b. a, b denotes the index of different points
+for (a,b) in [(0,1), (0,2), (0,3), (0,4)]:
+    distance(a, b)
+#output inital graph
 nx.draw(FG, with_labels=True)
 plt.show()
 
-#output inital graph
-
-
-#proposal probality 
-#if the graph cannot cut any edges. The probality of adding an edge is 1. 
-#if the graph cannot add any more edges. The probality of removing an edge is 1.
-#otherwise. The probality of adding or removing is 0.5.
-
-#define add edge function
+#define add edge function. we add an edge to the graph when this function is called
 def add_func(): 
   add=True
   #pick 2 nodes randomly, make sure a not equal b
@@ -102,13 +106,13 @@ def add_func():
       while a==b:
         b=random.randint(0,m-1)
       add=True
-     #if edge (a,b) not exist, add edge(a,b)
     else:    
+      #if edge (a,b) not exist, add edge(a,b)
       distance(a,b)
       add=False
   return None
       
-#define cut edge function
+#define cut edge function. we cut an edge whenthis function is called
 def cut_func():
     cut=True
     #pick 2 nodes randomly, make sure a not equal b
@@ -117,13 +121,15 @@ def cut_func():
       b=random.randint(0,m-1)
       while a==b:
          b=random.randint(0,m-1)  
-    #if (a,b) already exists, we can try to cut it
+      #if (a,b) already exists, we can try to cut it
       if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):           
          FG.remove_edge(a,b)
-         #if the graph is disconnectted after cut, we need to try another edge
+         #if the graph is connectted after cut, cut sucessfully.
          if nx.is_connected(FG):
              cut=False
-         else:            
+         #if the graph is disconnectted after cut, we need to try another edge
+         else:   
+             #restore the graph
              distance(a,b)
              cut=True
       else:         
@@ -173,34 +179,33 @@ def check_nocut():
     return nocut
 
 
-#main loop
+#main loop, starts form i=0
 i=0
+#expected edges number
+expc_edges=1.0*FG.number_of_edges()
 #calculate initial theta. tmp stores last step theta
 tmp=calc_weight()
 while i<istep:
     
-  #store current graph as ft  
+  #store current graph as FT 
   FT=nx.Graph(FG)
   #by checki_min function, we know this is the 'cannot cut' case
-  if check_min()==True:
-    #store current graph as ft   
+  if check_min()==True:  
     #propprob=proposal probaility q(j|i)
     #propprob_2=q(i|j)
-    #calculate(p(j|i))
+    #now calculate(p(j|i))
     prop_prob = 1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
     #add an edge
     add_func()
     #caclulate p(i|j)
     #if the graph is 'cannot add case', p(i|j)=1/current edge numbers
     prop_prob_2 = 1.0/(FG.number_of_edges())
-    if FG.number_of_edges()!=m*(m-1)/2:
     #otherwise, p(i|j)=0.5 (due to add/cut randomly) *1/current edge numbers
+    if FG.number_of_edges()!=m*(m-1)/2:
         prop_prob_2 = 0.5*1.0/(FG.number_of_edges())
-   
+     
     
-    
-    
-   #cannot add case
+  #cannot add case. we can only remove an edge
   elif FG.number_of_edges()==m*(m-1)/2:
     #calculate(p(j|i))
     prop_prob = 1.0/(m*(m-1)/2.0)
@@ -208,12 +213,12 @@ while i<istep:
     cut_func()
     #if the graph is 'cannot cut case', p(i|j)=1
     prop_prob_2=1.0
-    if check_min()==False:       
     #otherwise, we can add or cut. p(i|j)=0.5*1
+    if check_min()==False:       
         prop_prob_2 = 0.5*1.0
         
     
-   #for normal cases, choose add/cut randomly
+  #for normal cases, choose add/cut randomly
   else:
     #generate random number 
     a=random.randint(0,1)
@@ -255,9 +260,12 @@ while i<istep:
   tmp=calc_weight()
   #step increment
   i=i+1
-  #print FG.number_of_edges()
+  print FG.number_of_edges()
+  #cacluate the sum of edges over all graphs
+  expc_edges=expc_edges+1.0*FG.number_of_edges()
 
 
+expc_edges=expc_edges/i
 labels={}
 for i in range(5):
     labels[i]=str(i)
