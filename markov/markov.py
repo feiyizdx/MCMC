@@ -192,10 +192,9 @@ while i<istep:
     add_func()
     #caclulate p(i|j)
     #if the graph is 'cannot add case', p(i|j)=1/current edge numbers
-    if FG.number_of_edges()==m*(m-1)/2:
-        prop_prob_2 = 1.0/(FG.number_of_edges())
+    prop_prob_2 = 1.0/(FG.number_of_edges())
+    if FG.number_of_edges()!=m*(m-1)/2:
     #otherwise, p(i|j)=0.5 (due to add/cut randomly) *1/current edge numbers
-    else:
         prop_prob_2 = 0.5*1.0/(FG.number_of_edges())
    
     
@@ -208,10 +207,9 @@ while i<istep:
     #cut an edge
     cut_func()
     #if the graph is 'cannot cut case', p(i|j)=1
-    if check_min()==True:       
-        prop_prob_2 = 1.0
+    prop_prob_2=1.0
+    if check_min()==False:       
     #otherwise, we can add or cut. p(i|j)=0.5*1
-    else:
         prop_prob_2 = 0.5*1.0
         
     
@@ -225,9 +223,10 @@ while i<istep:
         prop_prob = 0.5*1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
         add_func()
         #calculate p(i|j)
-        if FG.number_of_edges()==m*(m-1)/2:
-            prop_prob_2 = 1.0/(FG.number_of_edges())
-        else:
+        #if it's cannot add case
+        prop_prob_2 = 1.0/(FG.number_of_edges())
+        #if it can be cut or add, 0.5 need to be mutiplied
+        if FG.number_of_edges()!=m*(m-1)/2:
             prop_prob_2 = 0.5*1.0/(FG.number_of_edges())
     #if a==0, cut an edge
     else:
