@@ -18,8 +18,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
+<<<<<<< HEAD
 from makrov.init import init_grid
 from calc_distance import distance
+=======
+from init import init_grid
+>>>>>>> 4447fb0496ac82ff81fbb4765ff804f3c9ca8dfa
 
 #intial parameters. m nodes/grid size
 m=5
@@ -30,6 +34,19 @@ istep=500
 #temperature
 T=10
 
+<<<<<<< HEAD
+=======
+
+
+class calc_distance(object):
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+    def distance(self, a_xcoord, a_ycoord, b_xcoord, b_ycoord):
+        self.dist=np.sqrt((a_xcoord-b_xcoord)**2+(a_ycoord-b_ycoord)**2)
+        FG.add_weighted_edges_from([(self.a,self.b,self.dist)],label=str(self.dist))
+    
+>>>>>>> 4447fb0496ac82ff81fbb4765ff804f3c9ca8dfa
        
 #genernate a m*m 2d grid
 init=init_grid(m)
