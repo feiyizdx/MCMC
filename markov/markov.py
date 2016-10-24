@@ -25,21 +25,11 @@ m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=500
+istep=20000
 #temperature
 T=10
 
-
-
-class calc_distance(object):
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
-    def distance(self, a_xcoord, a_ycoord, b_xcoord, b_ycoord):
-        self.dist=np.sqrt((a_xcoord-b_xcoord)**2+(a_ycoord-b_ycoord)**2)
-        FG.add_weighted_edges_from([(self.a,self.b,self.dist)],label=str(self.dist))
-    
-       
+   
 #genernate a m*m 2d grid
 init=init_grid(m)
 init.generate() 
