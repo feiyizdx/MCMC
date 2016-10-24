@@ -12,7 +12,7 @@ import sys
 import unittest
 
 
-from markov import markov
+from markov.markov import *
 
 class Testmarkov(unittest.TestCase):
 
