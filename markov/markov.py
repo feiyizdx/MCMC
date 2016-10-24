@@ -20,7 +20,7 @@ import unittest
 import random
 import sys
 import os.path
-parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'..'))
+parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'.'))
 sys.path.append(parent)
 from init import init_grid
 
