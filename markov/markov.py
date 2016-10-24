@@ -18,12 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
-<<<<<<< HEAD
-from makrov.init import init_grid
-from calc_distance import distance
-=======
 from init import init_grid
->>>>>>> 4447fb0496ac82ff81fbb4765ff804f3c9ca8dfa
 
 #intial parameters. m nodes/grid size
 m=5
@@ -34,8 +29,6 @@ istep=500
 #temperature
 T=10
 
-<<<<<<< HEAD
-=======
 
 
 class calc_distance(object):
@@ -46,7 +39,6 @@ class calc_distance(object):
         self.dist=np.sqrt((a_xcoord-b_xcoord)**2+(a_ycoord-b_ycoord)**2)
         FG.add_weighted_edges_from([(self.a,self.b,self.dist)],label=str(self.dist))
     
->>>>>>> 4447fb0496ac82ff81fbb4765ff804f3c9ca8dfa
        
 #genernate a m*m 2d grid
 init=init_grid(m)
@@ -62,6 +54,16 @@ xv=init.xv
 yv=init.yv
 
 
+#define weights function. the function can calculate two points distance when given coordinates
+#x_1,y_1, x_2,y_2 are x,y coordintes of two points
+def cacl_weights(x_1, y_1, x_2, y_2):
+    return np.sqrt((x_1-x_2)**2+(y_1-y_2)**2)
+    
+#define add edge function. add a weighted edge from nodes a and b
+def distance(a, b):
+    dist=cacl_weights(xv[xrange[a],yrange[a]], yv[xrange[a],yrange[a]],xv[xrange[b],yrange[b]], yv[xrange[b],yrange[b]])
+    FG.add_weighted_edges_from([(a,b,dist)],label=str(dist))
+    return None
     
 #genereate intial graph FG
 FG=nx.Graph()
@@ -94,7 +96,7 @@ def add_func():
       add=False
   return None
       
-#define cut edge function. we cut an edge when this function is called
+#define cut edge function. we cut an edge whenthis function is called
 def cut_func():
     cut=True
     #pick 2 nodes randomly, make sure a not equal b
