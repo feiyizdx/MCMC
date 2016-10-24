@@ -18,34 +18,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
-
+from init import init_grid
 
 #intial parameters. m nodes/grid size
 m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=3000
+istep=500
 #temperature
 T=10
 
-#define a class that generates a 2D grid,size=m*, dx=dy=1, x, y start from 0
-class init_grid(object):
-    def __init__(self, nodes):
-        self.nodes = m
-    #generate grid
-    def generate(self):
-        self.nxx, self.nyy = (self.nodes, self.nodes)
-        self.x = np.linspace(0, self.nodes-1, self.nxx)
-        self.y = np.linspace(0, self.nodes-1, self.nyy)
-        self.xv, self.yv = np.meshgrid(self.x, self.y)
-    #used to define node/vertex index in a grid
-    #pick up m points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
-    #xrange denotes nodes' x index in the grid
-    #yrange denotes nodes' y index in the grid
-    def coord(self, xrange, yrange):
-        self.xrange=xrange
-        self.yrange=yrange
+
 
 class calc_distance(object):
     def __init__(self, a, b):
@@ -262,9 +246,9 @@ while i<istep:
   tmp=calc_weight()
   #step increment
   i=i+1
-  nx.draw(FG, with_labels=True)
-  plt.show()
-  print FG.number_of_edges()
+ # nx.draw(FG, with_labels=True)
+ # plt.show()
+  #print FG.number_of_edges()
   #cacluate the edges connected to 0 over all graphs
   expc_edgeto0=expc_edgeto0+len(FG.neighbors(0))
   #cacluate the sum of edges over all graphs
@@ -285,8 +269,8 @@ for i in range(5):
     labels[i]=str(i)
 
 #output final graph  
-#nx.draw(FG, with_labels=True)
-#plt.show()
+nx.draw(FG, with_labels=True)
+plt.show()
 
 
 ####unit test
