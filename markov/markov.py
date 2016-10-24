@@ -18,43 +18,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
-
+from makrov.init import init_grid
+from calc_distance import distance
 
 #intial parameters. m nodes/grid size
 m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=3000
+istep=500
 #temperature
 T=10
 
-#define a class that generates a 2D grid,size=m*, dx=dy=1, x, y start from 0
-class init_grid(object):
-    def __init__(self, nodes):
-        self.nodes = m
-    #generate grid
-    def generate(self):
-        self.nxx, self.nyy = (self.nodes, self.nodes)
-        self.x = np.linspace(0, self.nodes-1, self.nxx)
-        self.y = np.linspace(0, self.nodes-1, self.nyy)
-        self.xv, self.yv = np.meshgrid(self.x, self.y)
-    #used to define node/vertex index in a grid
-    #pick up m points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
-    #xrange denotes nodes' x index in the grid
-    #yrange denotes nodes' y index in the grid
-    def coord(self, xrange, yrange):
-        self.xrange=xrange
-        self.yrange=yrange
-
-class calc_distance(object):
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
-    def distance(self, a_xcoord, a_ycoord, b_xcoord, b_ycoord):
-        self.dist=np.sqrt((a_xcoord-b_xcoord)**2+(a_ycoord-b_ycoord)**2)
-        FG.add_weighted_edges_from([(self.a,self.b,self.dist)],label=str(self.dist))
-    
        
 #genernate a m*m 2d grid
 init=init_grid(m)
@@ -70,16 +45,6 @@ xv=init.xv
 yv=init.yv
 
 
-#define weights function. the function can calculate two points distance when given coordinates
-#x_1,y_1, x_2,y_2 are x,y coordintes of two points
-def cacl_weights(x_1, y_1, x_2, y_2):
-    return np.sqrt((x_1-x_2)**2+(y_1-y_2)**2)
-    
-#define add edge function. add a weighted edge from nodes a and b
-def distance(a, b):
-    dist=cacl_weights(xv[xrange[a],yrange[a]], yv[xrange[a],yrange[a]],xv[xrange[b],yrange[b]], yv[xrange[b],yrange[b]])
-    FG.add_weighted_edges_from([(a,b,dist)],label=str(dist))
-    return None
     
 #genereate intial graph FG
 FG=nx.Graph()
@@ -112,7 +77,7 @@ def add_func():
       add=False
   return None
       
-#define cut edge function. we cut an edge whenthis function is called
+#define cut edge function. we cut an edge when this function is called
 def cut_func():
     cut=True
     #pick 2 nodes randomly, make sure a not equal b
@@ -262,9 +227,9 @@ while i<istep:
   tmp=calc_weight()
   #step increment
   i=i+1
-  nx.draw(FG, with_labels=True)
-  plt.show()
-  print FG.number_of_edges()
+ # nx.draw(FG, with_labels=True)
+ # plt.show()
+  #print FG.number_of_edges()
   #cacluate the edges connected to 0 over all graphs
   expc_edgeto0=expc_edgeto0+len(FG.neighbors(0))
   #cacluate the sum of edges over all graphs
@@ -285,8 +250,8 @@ for i in range(5):
     labels[i]=str(i)
 
 #output final graph  
-#nx.draw(FG, with_labels=True)
-#plt.show()
+nx.draw(FG, with_labels=True)
+plt.show()
 
 
 ####unit test
