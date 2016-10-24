@@ -90,7 +90,7 @@ def add_func():
       add=False
   return None
       
-#define cut edge function. we cut an edge whenthis function is called
+#define cut edge function. we cut an edge when this function is called
 def cut_func():
     cut=True
     #pick 2 nodes randomly, make sure a not equal b
@@ -157,7 +157,8 @@ def check_nocut():
     return nocut
 
 
-#####################main loop, starts form i=0
+#####################
+#main loop, starts form i=0
 i=1
 #iniital expected number of edges connected to 0
 expc_edgeto0=1.0*len(FG.neighbors(0))
@@ -249,7 +250,8 @@ while i<istep:
   expc_edges=expc_edges+1.0*FG.number_of_edges()
 
 
-##########end of main loop
+##########
+#end of main loop
 
 
 
@@ -268,18 +270,18 @@ plt.show()
 
 
 ####unit test
-class Test_markov(unittest.TestCase):
+#class Test_markov(unittest.TestCase):
      # test weights cal function
-     def test_weights(self):
-        self.assertEquals(cacl_weights(0.0, 1.0, 0.0, 2.0), 1.0)
+ #    def test_weights(self):
+  #      self.assertEquals(cacl_weights(0.0, 1.0, 0.0, 2.0), 1.0)
     #test distance calculation
-     def test_coordine(self):
-         self.assertEquals(cacl_weights(xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]],xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]]),0)
+   #  def test_coordine(self):
+    #     self.assertEquals(cacl_weights(xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]],xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]]),0)
     #test shortest path length
-     def test_len(self):
-         self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
+    # def test_len(self):
+     #    self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
   
          
         
-tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
-unittest.TextTestRunner().run(tests)
+#tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
+#unittest.TextTestRunner().run(tests)
