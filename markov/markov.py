@@ -18,6 +18,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import random
+import sys
+import os.path
+parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'..'))
+sys.path.append(parent)
 from init import init_grid
 
 #intial parameters. m nodes/grid size
@@ -156,7 +160,7 @@ def check_nocut():
 #####################main loop, starts form i=0
 i=1
 #iniital expected number of edges connected to 0
-expc_edgeto0=len(FG.neighbors(0))
+expc_edgeto0=1.0*len(FG.neighbors(0))
 #initialexpected edges number
 expc_edges=1.0*FG.number_of_edges()
 #calculate initial theta. tmp stores last step theta
@@ -240,7 +244,7 @@ while i<istep:
  # plt.show()
   #print FG.number_of_edges()
   #cacluate the edges connected to 0 over all graphs
-  expc_edgeto0=expc_edgeto0+len(FG.neighbors(0))
+  expc_edgeto0=expc_edgeto0+1.0*len(FG.neighbors(0))
   #cacluate the sum of edges over all graphs
   expc_edges=expc_edges+1.0*FG.number_of_edges()
 
