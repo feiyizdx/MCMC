@@ -15,8 +15,6 @@ import unittest
 from markov.markov import *
 
 class Testmarkov(unittest.TestCase):
-
-  class Test_markov(unittest.TestCase):
      # test weights cal function
      def test_weights(self):
         self.assertEquals(cacl_weights(0.0, 1.0, 0.0, 2.0), 1.0)
