@@ -30,20 +30,19 @@ Markov Chain Monte Carlo Project
 How to use
 --------
 * run the code  /markov/markov.py
-* the input parameters are steps (istep), weights realted parameter T and r (T, r), total nodes number (m), the nodes location in the 2-D grid (init.coor([_,_,...], [_,_,...]))
+* the input parameters are steps (istep), weights realted parameters T and r (T, r), total nodes number (m), the nodes location in the 2-D grid (init.coor([_,_,...], [_,_,...]))
+* the code generates a m*m 2D grid, origin is 0, dx=dy=1. For example, if m=3, meaning we have 3 nodes and a 3*3 grid. We can initilize the nodes by init.coor([2,1,1],[1,0,1]). The first, second, and third nodes are located at (2,1), (1,0), (1,1), respectively.
 Features
 --------
 * This is a Markov Chain Monte Carlo code for CHE477 project
 * The code employs Metropolis-Hastings Alogotithm
 * The proposal probality is based on randomly cuting/adding an edge. There are three cases, cannot cut case, cannot add case and normal case.
 
-1. Cannot cut case. If the graph is disconnected by cutting any edges, it cannot cut case.
- The probality of adding an edge is 1. 
+1. Cannot cut case. If the graph is disconnected by cutting any edges, it cannot cut case. The probality of adding an edge is 1. 
  1. P(j|i)=1/(total possible edges - edges already exist).
  2. We need to cut an edge to go back to previous graph. If after adding, it becomes cannot add case. P(i|j)=1/(edges exist - edges cannot be cut). If after adding, it is a normal case. P(i|j)=0.5/(edges exist - edges cannot be cut)
 
-2. Cannot add case. If the graph cannot add any more edges, it cannot add case. 
-The probality of removing an edge is 1.
+2. Cannot add case. If the graph cannot add any more edges, it cannot add case. The probality of removing an edge is 1.
  1. P(j|i)=1/(edges exist - edges cannot be removed)
  2. We need to add an edge to go back to previous graph. If after cutting, it becomes cannot cut case. P(i|j)=1/(total possible edges - edges already exist). If it's normal case, P(i|j)=1/(total possible edges - edges already exist). 
 

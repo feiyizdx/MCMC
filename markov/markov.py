@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # this is a code of MCMC
 ########
-#proposal probality 
-#if the graph cannot cut any edges. The probality of adding an edge is 1. 
-#if the graph cannot add any more edges. The probality of removing an edge is 1.
-#otherwise. The probality of adding or removing is 0.5.
+#proposal probability 
+#if the graph cannot cut any edges. The probability of adding an edge is 1. 
+#if the graph cannot add any more edges. The probability of removing an edge is 1.
+#otherwise. The probability of adding or removing is 0.5.
 ########
 #to use the code, you need to specify total nodes m
 #positions of these nodes in a 2d grid
 #total steps, istep
-#weights realted paramters r, T.
+#weights related parameters r, T.
 
 import networkx as nx
 import matplotlib
@@ -24,7 +24,7 @@ parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'.'))
 sys.path.append(parent)
 from init import init_grid
 
-#intial parameters. m nodes/grid size
+#initial parameters. m nodes/grid size
 m=5
 #initial parameter for r
 r=2.0
@@ -61,12 +61,12 @@ def distance(a, b):
     FG.add_weighted_edges_from([(a,b,dist)],label=str(dist))
     return None
     
-#genereate intial graph FG
+#generate initial graph FG
 FG=nx.Graph()
-#initial graph. this generete an edge between node a and node b.
+#initial graph. this generate an edge between node a and node b.
 for (a,b) in [(0,1), (0,2), (0,3), (0,4)]:
     distance(a, b)
-#output inital graph
+#output initial graph
 nx.draw(FG, with_labels=True)
 plt.show()
 
@@ -79,7 +79,7 @@ def add_func():
   while a==b:
     b=random.randint(0,m-1)
   while(add):   
-    #if edge (a,b) already exists, genrete new patterns of (a,b)
+    #if edge (a,b) already exists, genre new patterns of (a,b)
     if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):
       a=random.randint(0,m-1)
       b=random.randint(0,m-1)
@@ -104,10 +104,10 @@ def cut_func():
       #if (a,b) already exists, we can try to cut it
       if (((a,b) in FG.edges() ) or ((b,a) in FG.edges() )):           
          FG.remove_edge(a,b)
-         #if the graph is connectted after cut, cut sucessfully.
+         #if the graph is connected after cut, cut successfully.
          if nx.is_connected(FG):
              cut=False
-         #if the graph is disconnectted after cut, we need to try another edge
+         #if the graph is disconnected after cut, we need to try another edge
          else:   
              #restore the graph
              distance(a,b)
@@ -138,7 +138,7 @@ def check_min():
         minmum=False
      #recover the graph by adding the removed edge back
      distance(a,b)
-  #at last, if no edges in the graph cannot be cut, return mimum true.
+  #at last, if no edges in the graph cannot be cut, return minmum true.
   return minmum
 
 #define function that counts the number of edges cannot be cut
@@ -163,10 +163,10 @@ def check_nocut():
 #####################
 #main loop, starts form i=1
 i=1
-#iniital expected number of edges connected to 0
+#initial expected number of edges connected to 0
 expc_edgeto0=np.zeros(istep+1)
 expc_edgeto0[0]=1.0*len(FG.neighbors(0))
-#initialexpected edges number
+#initial expected edges number
 expc_edges=np.zeros(istep+1)
 expc_edges[0]=1.0*FG.number_of_edges()
 #calculate initial theta. tmp stores previous step theta
@@ -177,13 +177,13 @@ while i<istep:
   FT=nx.Graph(FG)
   #by checki_min function, we know this is the 'cannot cut' case
   if check_min()==True:  
-    #propprob=proposal probaility q(j|i)
+    #propprob=proposal probability q(j|i)
     #propprob_2=q(i|j)
     #now calculate(p(j|i)), which equals 1 divided by (all possible edges - edges already exist)
     prop_prob = 1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
     #add an edge
     add_func()
-    #caclulate p(i|j)
+    #calculate p(i|j)
     #if the graph is 'cannot add case', p(i|j)=1/current edge numbers
     prop_prob_2 = 1.0/(FG.number_of_edges())
     #otherwise, p(i|j)=0.5 (due to add/cut randomly) *1/current edge numbers
@@ -253,9 +253,9 @@ while i<istep:
  # nx.draw(FG, with_labels=True)
  # plt.show()
   #print FG.number_of_edges()
-  #cacluate the edges connected to 0 over all graphs
+  #calculate the edges connected to 0 over all graphs
   expc_edgeto0[i]=1.0*len(FG.neighbors(0))
-  #cacluate the sum of edges over all graphs
+  #calculate the sum of edges over all graphs
   expc_edges[i]=1.0*FG.number_of_edges()
 
 
@@ -267,7 +267,7 @@ while i<istep:
 #store all values in steady state (after istep/2) in other arrays
 expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
 expc_edges_stat=expc_edges[istep/2: istep+1]
-#calculate avereage
+#calculate average
 expc_edgeto0_avr=np.average(expc_edgeto0_stat)
 expc_edges_avr=np.average(expc_edges_stat)
 
@@ -284,36 +284,8 @@ nx.draw(FG, with_labels=True)
 plt.show()
 
 
-#####unit test
-#class Test_markov(unittest.TestCase):
-#     # test weights cal function
-#     def test_weights(self):
-#        self.assertEquals(cacl_weights(0.0, 1.0, 0.0, 2.0), 1.0)
-#    #test the idea of distance calculation function 
-#     def test_coordine(self):
-#         self.assertEquals(cacl_weights(xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]],xv[xrange[1],yrange[1]], yv[xrange[1],yrange[1]]),0)
-#    #test the use of shortest path length is not wrong.
-#     def test_len(self):
-#         self.assertEqual(nx.shortest_path_length(FG,source=2,target=2, weight='weight'),0)
-#    #test initial class works or not. check the code whether stores the node #1 x coord as 3.
-#     def test_initial(self):
-#         self.assertEqual(xrange[1],1)
-#    #test expected edges  after add
-#     def test_addedge(self):
-#         num1=FG.number_of_edges()
-#         add_func()
-#         num2=FG.number_of_edges()
-#         self.assertEqual(num2-num1,1)
-#    #test expected edges after cut
-#     def test_cutedge(self):
-#         num1=FG.number_of_edges()
-#         cut_func()
-#         num2=FG.number_of_edges()
-#         self.assertEqual(num2-num1,-1)
-          
      
 
-         
-        
+#already moved test parts to test file
 #tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
 #unittest.TextTestRunner().run(tests)
