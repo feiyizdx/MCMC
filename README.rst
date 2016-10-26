@@ -35,10 +35,7 @@ Features
 --------
 * This is a Markov Chain Monte Carlo code for CHE477 project
 * The code employs Metropolis-Hastings Alogotithm
-* The proposal probality is based on randomly cuting/adding an edge
-
-####Proposal probality
-There are three cases, cannot cut case, cannot add case and normal case.
+* The proposal probality is based on randomly cuting/adding an edge. There are three cases, cannot cut case, cannot add case and normal case.
 
 1. Cannot cut case. If the graph is disconnected by cutting any edges, it cannot cut case.
  The probality of adding an edge is 1. 
