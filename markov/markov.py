@@ -33,17 +33,19 @@ istep=20000
 #temperature
 T=10
 
-   
 #genernate a m*m 2d grid
 init=init_grid(m)
 init.generate() 
-#pick up m points in the grid as nodes. e.g. #0 (0,0) #1 (1,2) #2 (1,3) #3 (3,2) #4 (4,4)
+#pick up m points in the grid as nodes. e.g. pick up 5 nodes, node #0 (0 denotes nodes index) (0,0) (this denotes the location of the node in the 2d grid)
+#and node #1 (1,2), node #2 (1,3), node #3 (3,2), node #4 (4,4)
+
+#the values in first [] is node
 init.coord([0,1,1,3,4],[0,2,3,2,4])
-#xrange denotes node's x index in the grid
-#yrange denotes node's y index in the grid
+#xrange stores node's x coord in the grid
+#yrange stores node's y coord in the grid
 xrange=init.xrange
 yrange=init.yrange
-#xv, yv are the grid coordines
+#xv, yv are the 2d grid coordines
 xv=init.xv
 yv=init.yv
 
@@ -61,7 +63,7 @@ def distance(a, b):
     
 #genereate intial graph FG
 FG=nx.Graph()
-#initial graph. this generete an edge between node a and node b. a, b denotes the index of different points
+#initial graph. this generete an edge between node a and node b.
 for (a,b) in [(0,1), (0,2), (0,3), (0,4)]:
     distance(a, b)
 #output inital graph
@@ -136,9 +138,10 @@ def check_min():
         minmum=False
      #recover the graph by adding the removed edge back
      distance(a,b)
+  #at last, if no edges in the graph cannot be cut, return mimum true.
   return minmum
 
-#define function that counts the edges cannot be cut
+#define function that counts the number of edges cannot be cut
 def check_nocut():
     #nocut denotes the number of edges cannot be cut
     nocut=0
@@ -164,17 +167,17 @@ i=1
 expc_edgeto0=1.0*len(FG.neighbors(0))
 #initialexpected edges number
 expc_edges=1.0*FG.number_of_edges()
-#calculate initial theta. tmp stores last step theta
+#calculate initial theta. tmp stores previous step theta
 tmp=calc_weight()
-while i<istep:
-    
+
+while i<istep:    
   #store current graph as FT 
   FT=nx.Graph(FG)
   #by checki_min function, we know this is the 'cannot cut' case
   if check_min()==True:  
     #propprob=proposal probaility q(j|i)
     #propprob_2=q(i|j)
-    #now calculate(p(j|i))
+    #now calculate(p(j|i)), which equals 1 divided by (all possible edges - edges already exist)
     prop_prob = 1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
     #add an edge
     add_func()
@@ -186,12 +189,13 @@ while i<istep:
         prop_prob_2 = 0.5*1.0/(FG.number_of_edges())
      
     
-  #cannot add case. we can only remove an edge
+  #cannot add case. we can only remove an edge in the graph because all pairs are connected
   elif FG.number_of_edges()==m*(m-1)/2:
     #calculate(p(j|i))
     prop_prob = 1.0/(m*(m-1)/2.0)
     #cut an edge
     cut_func()
+    #calculate p(i|j)
     #if the graph is 'cannot cut case', p(i|j)=1
     prop_prob_2=1.0
     #otherwise, we can add or cut. p(i|j)=0.5*1
@@ -205,11 +209,12 @@ while i<istep:
     a=random.randint(0,1)
     #if a==1, add an edge
     if a==1:
-        #calculate p(j|i)
+        #calculate p(j|i), which equals 1 divided by (all possible edges - edges already exist)
         prop_prob = 0.5*1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
+        #add an edge
         add_func()
         #calculate p(i|j)
-        #if it's cannot add case
+        #if it's cannot add case, we can only cut. p(i|j)=1/number of edges exist
         prop_prob_2 = 1.0/(FG.number_of_edges())
         #if it can be cut or add, 0.5 need to be mutiplied
         if FG.number_of_edges()!=m*(m-1)/2:
@@ -218,13 +223,15 @@ while i<istep:
     else:
         #total edge is the number of all edges
         totaledge = FG.number_of_edges()
-        #calculate p(j|i)
+        #calculate p(j|i), which equals 0.5 divided by (number of exist edges - edges cannot be cut)
         prop_prob = 0.5*1.0/(totaledge-check_nocut())
         #cut an edge
         cut_func()
         #calculate p(i|j)
+        #if it's cannot cut case, we can only add an edge in this graph
         if check_min()==True:       
             prop_prob_2 = 1.0/(m*(m-1)/2.0-FG.number_of_edges())
+        #otherwise, 0,5 need to be multiplied
         else:
             prop_prob_2 = 0.5*1.0/(m*(m-1)/2.0-FG.number_of_edges())
   #calculate stationary probaility
@@ -234,7 +241,7 @@ while i<istep:
   #if rand_uni<pi_j*q(i|j)/(pi_i*q(j|i)), accept it
   if rand_uni<(min(sta_prob*prop_prob_2/prop_prob ,1)):
         pass
-  #otherwise, use the old one
+  #otherwise, use the previous one
   else:
         FG=nx.Graph(FT) 
   #store previous theta
