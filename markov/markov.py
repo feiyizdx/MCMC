@@ -29,7 +29,7 @@ m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=20000
+istep=30000
 #temperature
 T=10
 
@@ -161,12 +161,14 @@ def check_nocut():
 
 
 #####################
-#main loop, starts form i=0
+#main loop, starts form i=1
 i=1
 #iniital expected number of edges connected to 0
-expc_edgeto0=1.0*len(FG.neighbors(0))
+expc_edgeto0=np.zeros(istep+1)
+expc_edgeto0[0]=1.0*len(FG.neighbors(0))
 #initialexpected edges number
-expc_edges=1.0*FG.number_of_edges()
+expc_edges=np.zeros(istep+1)
+expc_edges[0]=1.0*FG.number_of_edges()
 #calculate initial theta. tmp stores previous step theta
 tmp=calc_weight()
 
@@ -252,21 +254,27 @@ while i<istep:
  # plt.show()
   #print FG.number_of_edges()
   #cacluate the edges connected to 0 over all graphs
-  expc_edgeto0=expc_edgeto0+1.0*len(FG.neighbors(0))
+  expc_edgeto0[i]=1.0*len(FG.neighbors(0))
   #cacluate the sum of edges over all graphs
-  expc_edges=expc_edges+1.0*FG.number_of_edges()
+  expc_edges[i]=1.0*FG.number_of_edges()
 
 
 ##########
 #end of main loop
 
-
-
+###########
+#calculate expected edges
+#store all values in steady state (after istep/2) in other arrays
+expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
+expc_edges_stat=expc_edges[istep/2: istep+1]
+#calculate avereage
+expc_edgeto0_avr=np.average(expc_edgeto0_stat)
+expc_edges_avr=np.average(expc_edges_stat)
 
 #calculate edges connected to 0 by averaging over all graphs
-expc_edgeto0=expc_edgeto0/i
+#expc_edgeto0=expc_edgeto0/i
 #calculate the expected edges number by averaging over all graphs
-expc_edges=expc_edges/i
+#expc_edges=expc_edges/i
 labels={}
 for i in range(5):
     labels[i]=str(i)
