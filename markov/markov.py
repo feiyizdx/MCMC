@@ -31,7 +31,7 @@ m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=2000
+istep=30000
 #temperature
 T=10
 
@@ -69,9 +69,7 @@ FG=nx.Graph()
 #initial graph. this generate an edge between node a and node b.
 for (a,b) in [(0,1), (0,2), (0,3), (0,4)]:
     distance(a, b)
-#output initial graph
-nx.draw(FG, with_labels=True)
-plt.show()
+
 
 #define add edge function. we add an edge to the graph when this function is called
 def add_func(): 
@@ -325,6 +323,8 @@ while i<=istep:
 expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
 expc_edges_stat=expc_edges[istep/2: istep+1]
 expc_max_dist_stat=expc_max_dist[istep/2:istep+1]
+
+########these are the expected values we are asked to calculate########
 #calculate average
 #this is expected number of edges connected to vertex 0
 expc_edgeto0_avr=np.average(expc_edgeto0_stat)
@@ -332,7 +332,7 @@ expc_edgeto0_avr=np.average(expc_edgeto0_stat)
 expc_edges_avr=np.average(expc_edges_stat)
 #this is expected maximum distance 
 expc_max_dist_avr=np.average(expc_max_dist_stat)
-
+########################################################################
 
 
 #find the most probable graph <thanks to xinyang li's idea>
@@ -347,15 +347,20 @@ for edge in alledges_list:
         hist[edge]=1
 #sorted the dictionary
 hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
-#convert to edges list and pick the top one
-high_freq_edge = ast.literal_eval(hist_sort[0][0])
-
-#recover this most  graph
-for (a,b) in high_freq_edge:
-    distance(a, b)
-#plot the most probable graph  
-nx.draw(FG, with_labels=True)
-plt.show()
+#convert to edges list and pick the one with probalilty higer than 1%
+#20 is enough large to cover all possibilitis for now. this needs further review
+for i in range(20):
+    #calculate proability, if >=1%, output the graph
+    if(hist_sort[i][1]/float(istep) >=0.01):
+        high_freq_edge = ast.literal_eval(hist_sort[i][0])
+        print high_freq_edge
+        #recover this most propable graph
+        for (a,b) in high_freq_edge:
+            distance(a, b)
+        #plot the most probable graph 
+        nx.draw(FG, with_labels=True)
+        plt.show()
+        
 
 #output average figure
 plt.plot(edgeto0_avr, label='edges connected to 0')
