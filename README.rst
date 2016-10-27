@@ -60,13 +60,13 @@ Sample results
 4. initial nodes postion (0,0) (1,2) (1,3) (3,2) (4,4); init.coord([0,1,1,3,4],[0,2,3,2,4])
 * results
 1. 2 most probable graphs
-![](https://pbs.twimg.com/media/CvvhkPfXgAAm24R.jpg)
-![](https://pbs.twimg.com/media/Cvvhlu3XEAAJCiF.jpg) 
+![graph1](https://pbs.twimg.com/media/CvvhkPfXgAAm24R.jpg)
+![graph2](https://pbs.twimg.com/media/Cvvhlu3XEAAJCiF.jpg) 
 2. expected number of edges connected to vertex 0 is 1,97
 3. expected number of edges is 4.96
 4. expected maximum distance is 6.64
 5. the following figure shows time seriers of averaged quantities
-![](https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg)
+![average](https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg)
 
 Credits
 ---------
