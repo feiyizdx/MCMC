@@ -39,8 +39,9 @@ init.generate()
 #pick up m points in the grid as nodes. e.g. pick up 5 nodes, node #0 (0 denotes nodes index) (0,0) (this denotes the location of the node in the 2d grid)
 #and node #1 (1,2), node #2 (1,3), node #3 (3,2), node #4 (4,4)
 
-#the values in first [] is node
+#the values in first [] is nodes' x coordine, respectively. the values in second [] is nodes' y coordines respectively.
 init.coord([0,1,1,3,4],[0,2,3,2,4])
+
 #xrange stores node's x coord in the grid
 #yrange stores node's y coord in the grid
 xrange=init.xrange
@@ -160,19 +161,38 @@ def check_nocut():
     return nocut
 
 
-#####################
-#main loop, starts form i=1
-i=1
+
+#value of all steps are stored. i can also cacluate online, but here I prefer to store all of them for analysis and verification
 #initial expected number of edges connected to 0
 expc_edgeto0=np.zeros(istep+1)
 expc_edgeto0[0]=1.0*len(FG.neighbors(0))
-#initial expected edges number
+#initial expected edges number in the graph
 expc_edges=np.zeros(istep+1)
 expc_edges[0]=1.0*FG.number_of_edges()
+
+#calculate maximum distance of the shortest path that connects vertex 0 to another vertex
+#tmp_dist is used to compare and store the value temporarily
+expc_max_dist=np.zeros(istep+1)
+#loop over all edges
+for j in range(m):
+    tmp_dist=nx.shortest_path_length(FG,source=0,target=j, weight='weight') 
+    #compare current one and previous largest one, ensure we always store the large one
+    if tmp_dist>expc_max_dist[0]:
+        #find the intial value for maximum distance
+        expc_max_dist[0]=tmp_dist
+
+        
+
+
 #calculate initial theta. tmp stores previous step theta
 tmp=calc_weight()
 
-while i<istep:    
+
+
+#####################
+#main loop, starts form i=1
+i=1
+while i<=istep:    
   #store current graph as FT 
   FT=nx.Graph(FG)
   #by checki_min function, we know this is the 'cannot cut' case
@@ -246,18 +266,22 @@ while i<istep:
   #otherwise, use the previous one
   else:
         FG=nx.Graph(FT) 
+        
   #store previous theta
   tmp=calc_weight()
-  #step increment
-  i=i+1
- # nx.draw(FG, with_labels=True)
- # plt.show()
-  #print FG.number_of_edges()
   #calculate the edges connected to 0 over all graphs
   expc_edgeto0[i]=1.0*len(FG.neighbors(0))
   #calculate the sum of edges over all graphs
   expc_edges[i]=1.0*FG.number_of_edges()
-
+  #calculate maximim distance
+  for j in range(m):
+    tmp_dist=nx.shortest_path_length(FG,source=0,target=j, weight='weight')    
+    #compare current one and previous largest one, ensure we always store the large one
+    if tmp_dist>expc_max_dist[i]:
+        #find the intial value for maximum distance
+        expc_max_dist[i]=tmp_dist
+  #step increment
+  i=i+1
 
 ##########
 #end of main loop
@@ -267,17 +291,14 @@ while i<istep:
 #store all values in steady state (after istep/2) in other arrays
 expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
 expc_edges_stat=expc_edges[istep/2: istep+1]
-#calculate average
+expc_max_dist_stat=expc_max_dist[istep/2:istep+1]
+#calculate a average
+#this is expected number of edges connected to vertex 0
 expc_edgeto0_avr=np.average(expc_edgeto0_stat)
 expc_edges_avr=np.average(expc_edges_stat)
+expc_max_dist_avr=np.average(expc_max_dist_stat)
 
-#calculate edges connected to 0 by averaging over all graphs
-#expc_edgeto0=expc_edgeto0/i
-#calculate the expected edges number by averaging over all graphs
-#expc_edges=expc_edges/i
-labels={}
-for i in range(5):
-    labels[i]=str(i)
+
 
 #output final graph  
 nx.draw(FG, with_labels=True)
