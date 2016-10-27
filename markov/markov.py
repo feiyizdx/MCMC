@@ -307,10 +307,7 @@ expc_max_dist_avr=np.average(expc_max_dist_stat)
 
 
 
-#find the most possible graph <thanks to xinyang li's idea>
-
-histo=open('histogram','w')
-
+#find the most probable graph <thanks to xinyang li's idea>
 #intialize a dictionary for counting later
 hist={}
 for edge in alledges_list:
@@ -322,9 +319,13 @@ for edge in alledges_list:
         hist[edge]=1
 #sorted the dictionary
 hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
+#conver to edges list and pick the top one
+high_freq_edge = ast.literal_eval(hist_sort[0][0])
 
-
-#output final graph  
+#recover this graph
+for (a,b) in high_freq_edge:
+    distance(a, b)
+#plot the most probable graph  
 nx.draw(FG, with_labels=True)
 plt.show()
 
