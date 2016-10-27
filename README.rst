@@ -68,9 +68,9 @@ Sample results
 2. expected number of edges connected to vertex 0 is 1,97
 3. expected number of edges is 4.96
 4. expected maximum distance is 6.64
-5. the figure_ shows time seriers of averaged quantities
+5. this_ shows time seriers of averaged quantities
 
-.. _fingure: https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg
+.. _this: https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg
 
 Credits
 ---------
