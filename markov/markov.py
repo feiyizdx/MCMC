@@ -348,7 +348,7 @@ for edge in alledges_list:
 #sorted the dictionary
 hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
 #convert to edges list and pick the one with probalilty higer than 1%
-#20 is enough large to cover all possibilitis for now. this needs further review
+#20 is enough large to cover all possibilities for now. this needs further review
 for i in range(20):
     #calculate proability, if >=1%, output the graph
     if(hist_sort[i][1]/float(istep) >=0.01):
