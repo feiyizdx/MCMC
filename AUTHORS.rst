@@ -9,5 +9,4 @@ Development Lead
 
 Contributors
 ------------
-
-None yet. Why not be the first?
+* Xinyang Li. I discussed with Xinyang. He shared his idea of find most possible graph with me.

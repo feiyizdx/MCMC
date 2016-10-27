@@ -16,10 +16,11 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-import unittest
 import random
 import sys
 import os.path
+import operator
+import ast
 parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'.'))
 sys.path.append(parent)
 from init import init_grid
@@ -160,7 +161,7 @@ def check_nocut():
         distance(a, b)
     return nocut
 
-
+###########some initialization for the main loop######
 
 #value of all steps are stored. i can also cacluate online, but here I prefer to store all of them for analysis and verification
 #initial expected number of edges connected to 0
@@ -179,17 +180,18 @@ for j in range(m):
     #compare current one and previous largest one, ensure we always store the large one
     if tmp_dist>expc_max_dist[0]:
         #find the intial value for maximum distance
-        expc_max_dist[0]=tmp_dist
-
-        
-
-
+        expc_max_dist[0]=tmp_dist        
 #calculate initial theta. tmp stores previous step theta
 tmp=calc_weight()
 
+#initialize a list to store all edges
+alledges_list=[None]*0
+#write the intial graph to the list as string
+alledges_list.append(str(FG.edges()))
+##################################
 
 
-#####################
+###############################
 #main loop, starts form i=1
 i=1
 while i<=istep:    
@@ -280,15 +282,20 @@ while i<=istep:
     if tmp_dist>expc_max_dist[i]:
         #find the intial value for maximum distance
         expc_max_dist[i]=tmp_dist
+            
+  #most possible graph calculation, append all graphs' list info to the list 
+  alledges_list.append(str(FG.edges()))
+  
   #step increment
-  i=i+1
+  i+=1
 
 ##########
 #end of main loop
 
+
 ###########
 #calculate expected edges
-#store all values in steady state (after istep/2) in other arrays
+#store all values in steady state (assume steday after istep/2) in other arrays
 expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
 expc_edges_stat=expc_edges[istep/2: istep+1]
 expc_max_dist_stat=expc_max_dist[istep/2:istep+1]
@@ -298,6 +305,23 @@ expc_edgeto0_avr=np.average(expc_edgeto0_stat)
 expc_edges_avr=np.average(expc_edges_stat)
 expc_max_dist_avr=np.average(expc_max_dist_stat)
 
+
+
+#find the most possible graph <thanks to xinyang li's idea>
+
+histo=open('histogram','w')
+
+#intialize a dictionary for counting later
+hist={}
+for edge in alledges_list:
+    #if alread in the dictionary, add 1
+    if edge in hist:
+        hist[edge]+=1
+    #otherwise, record it
+    else:
+        hist[edge]=1
+#sorted the dictionary
+hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
 
 
 #output final graph  
