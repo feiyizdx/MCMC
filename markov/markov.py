@@ -353,7 +353,6 @@ for i in range(20):
     #calculate proability, if >=1%, output the graph
     if(hist_sort[i][1]/float(istep) >=0.01):
         high_freq_edge = ast.literal_eval(hist_sort[i][0])
-        print high_freq_edge
         #recover this most propable graph
         for (a,b) in high_freq_edge:
             distance(a, b)

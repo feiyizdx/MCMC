@@ -62,15 +62,15 @@ Sample results
 * results
 1. 2 most probable graphs
 
-![graph1](https://pbs.twimg.com/media/CvvhkPfXgAAm24R.jpg)
-![graph2](https://pbs.twimg.com/media/Cvvhlu3XEAAJCiF.jpg) 
+![image](https://pbs.twimg.com/media/CvvhkPfXgAAm24R.jpg)
+![image](https://pbs.twimg.com/media/Cvvhlu3XEAAJCiF.jpg) 
 
 2. expected number of edges connected to vertex 0 is 1,97
 3. expected number of edges is 4.96
 4. expected maximum distance is 6.64
 5. the following figure shows time seriers of averaged quantities
 
-![average](https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg)
+![image](https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg)
 
 Credits
 ---------
