@@ -9,4 +9,4 @@ Development Lead
 
 Contributors
 ------------
-* Xinyang Li. I discussed with Xinyang. He shared his idea of find most possible graph with me.
+* Xinyang Li. I discussed with Xinyang. He shared his idea of finding most probable graph with me.

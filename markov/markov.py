@@ -319,7 +319,7 @@ for edge in alledges_list:
         hist[edge]=1
 #sorted the dictionary
 hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
-#conver to edges list and pick the top one
+#convert to edges list and pick the top one
 high_freq_edge = ast.literal_eval(hist_sort[0][0])
 
 #recover this graph
