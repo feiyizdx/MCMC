@@ -70,8 +70,7 @@ Sample results
 4. expected maximum distance is 6.64
 5. the following figure shows time seriers of averaged quantities
 
-![values](https://pbs.twimg.com/media/CvvbalWWEAAA3rm.jpg "values")
-
+![values](https://github.com/xinbian/langevin_dynamics/raw/master/Screenshots/avereag222.png)
 Credits
 ---------
 
