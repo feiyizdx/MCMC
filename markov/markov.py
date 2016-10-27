@@ -186,13 +186,13 @@ for j in range(m):
 
  
 #for post processing and visulization, initialize values averaged by all steps already calculated, this is not expected value.     
-#initialize edges connected to 0 average
+#initialize average edges connected to 0 
 edgeto0_avr=np.zeros(istep+1, dtype=np.float64)
 edgeto0_avr[0]=expc_edgeto0[0]   
-
+#initialize average edge numbers
 edges_avr=np.zeros(istep+1, dtype=np.float64)
 edges_avr[0]=expc_edges[0]  
-
+#initialize average maximum distance
 max_dist_avr= np.zeros(istep+1, dtype=np.float64)  
 max_dist_avr[0]=expc_max_dist[0]
 

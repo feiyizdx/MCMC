@@ -71,6 +71,7 @@ Sample results
 5. the following figure shows time seriers of averaged quantities
 
 ![values](https://github.com/xinbian/langevin_dynamics/raw/master/Screenshots/avereag222.png)
+
 Credits
 ---------
 
