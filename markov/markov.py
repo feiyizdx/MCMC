@@ -21,6 +21,7 @@ import sys
 import os.path
 import operator
 import ast
+import pylab
 parent = os.path.abspath(os.path.join(os.path.dirname(__file__),'.'))
 sys.path.append(parent)
 from init import init_grid
@@ -30,7 +31,7 @@ m=5
 #initial parameter for r
 r=2.0
 #total time steps
-istep=30000
+istep=2000
 #temperature
 T=10
 
@@ -163,17 +164,19 @@ def check_nocut():
 
 ###########some initialization for the main loop######
 
-#value of all steps are stored. i can also cacluate online, but here I prefer to store all of them for analysis and verification
-#initial expected number of edges connected to 0
-expc_edgeto0=np.zeros(istep+1)
-expc_edgeto0[0]=1.0*len(FG.neighbors(0))
-#initial expected edges number in the graph
-expc_edges=np.zeros(istep+1)
-expc_edges[0]=1.0*FG.number_of_edges()
+#values of all steps are stored. i can also cacluate online, but here I prefer to store all of them for analysis and verification
 
-#calculate maximum distance of the shortest path that connects vertex 0 to another vertex
+#initialize number of edges connected to 0
+expc_edgeto0=np.zeros(istep+1, dtype=np.float64)
+expc_edgeto0[0]=len(FG.neighbors(0))
+
+#initialize edges number in the graph
+expc_edges=np.zeros(istep+1, dtype=np.float64)
+expc_edges[0]=FG.number_of_edges()
+
+#intialize maximum distance of the shortest path that connects vertex 0 to another vertex
 #tmp_dist is used to compare and store the value temporarily
-expc_max_dist=np.zeros(istep+1)
+expc_max_dist=np.zeros(istep+1, dtype=np.float64)
 #loop over all edges
 for j in range(m):
     tmp_dist=nx.shortest_path_length(FG,source=0,target=j, weight='weight') 
@@ -181,6 +184,24 @@ for j in range(m):
     if tmp_dist>expc_max_dist[0]:
         #find the intial value for maximum distance
         expc_max_dist[0]=tmp_dist        
+
+
+ 
+#for post processing and visulization, initialize values averaged by all steps already calculated, this is not expected value.     
+#initialize edges connected to 0 average
+edgeto0_avr=np.zeros(istep+1, dtype=np.float64)
+edgeto0_avr[0]=expc_edgeto0[0]   
+
+edges_avr=np.zeros(istep+1, dtype=np.float64)
+edges_avr[0]=expc_edges[0]  
+
+max_dist_avr= np.zeros(istep+1, dtype=np.float64)  
+max_dist_avr[0]=expc_max_dist[0]
+
+
+
+
+
 #calculate initial theta. tmp stores previous step theta
 tmp=calc_weight()
 
@@ -234,7 +255,7 @@ while i<=istep:
     #if a==1, add an edge
     if a==1:
         #calculate p(j|i), which equals 1 divided by (all possible edges - edges already exist)
-        prop_prob = 0.5*1.0/(m*(m-1)/2.0-1.0*FG.number_of_edges())
+        prop_prob = 0.5/(m*(m-1)/2.0-1.0*FG.number_of_edges())
         #add an edge
         add_func()
         #calculate p(i|j)
@@ -242,13 +263,11 @@ while i<=istep:
         prop_prob_2 = 1.0/(FG.number_of_edges())
         #if it can be cut or add, 0.5 need to be mutiplied
         if FG.number_of_edges()!=m*(m-1)/2:
-            prop_prob_2 = 0.5*1.0/(FG.number_of_edges())
+            prop_prob_2 = 0.5/(FG.number_of_edges())
     #if a==0, cut an edge
     else:
-        #total edge is the number of all edges
-        totaledge = FG.number_of_edges()
         #calculate p(j|i), which equals 0.5 divided by (number of exist edges - edges cannot be cut)
-        prop_prob = 0.5*1.0/(totaledge-check_nocut())
+        prop_prob = 0.5/(FG.number_of_edges()-check_nocut())
         #cut an edge
         cut_func()
         #calculate p(i|j)
@@ -257,7 +276,7 @@ while i<=istep:
             prop_prob_2 = 1.0/(m*(m-1)/2.0-FG.number_of_edges())
         #otherwise, 0,5 need to be multiplied
         else:
-            prop_prob_2 = 0.5*1.0/(m*(m-1)/2.0-FG.number_of_edges())
+            prop_prob_2 = 0.5/(m*(m-1)/2.0-FG.number_of_edges())
   #calculate stationary probaility
   sta_prob = np.exp(-(calc_weight()-tmp)/T)
   #generate a random number rand_uni between 0,1
@@ -271,20 +290,27 @@ while i<=istep:
         
   #store previous theta
   tmp=calc_weight()
-  #calculate the edges connected to 0 over all graphs
-  expc_edgeto0[i]=1.0*len(FG.neighbors(0))
-  #calculate the sum of edges over all graphs
-  expc_edges[i]=1.0*FG.number_of_edges()
+  #calculate the edges connected to 0
+  expc_edgeto0[i]=len(FG.neighbors(0))
+  #calculate the number of edges 
+  expc_edges[i]=FG.number_of_edges()
   #calculate maximim distance
   for j in range(m):
     tmp_dist=nx.shortest_path_length(FG,source=0,target=j, weight='weight')    
-    #compare current one and previous largest one, ensure we always store the large one
+    #compare current one and previous largest one, ensure we always store the larger one
     if tmp_dist>expc_max_dist[i]:
         #find the intial value for maximum distance
         expc_max_dist[i]=tmp_dist
             
   #most possible graph calculation, append all graphs' list info to the list 
   alledges_list.append(str(FG.edges()))
+  
+  #calcuate averaged number of edges connected to vertex 0
+  edgeto0_avr[i]=np.average(expc_edgeto0[0:i])
+  #calculate averaged edges number
+  edges_avr[i]=np.average(expc_edges[0:i])
+  #calculate averaged maximum distance 
+  max_dist_avr[i]=np.average(expc_max_dist[0:i])
   
   #step increment
   i+=1
@@ -299,10 +325,12 @@ while i<=istep:
 expc_edgeto0_stat=expc_edgeto0[istep/2: istep+1]
 expc_edges_stat=expc_edges[istep/2: istep+1]
 expc_max_dist_stat=expc_max_dist[istep/2:istep+1]
-#calculate a average
+#calculate average
 #this is expected number of edges connected to vertex 0
 expc_edgeto0_avr=np.average(expc_edgeto0_stat)
+#this is expected edges number in the graph 
 expc_edges_avr=np.average(expc_edges_stat)
+#this is expected maximum distance 
 expc_max_dist_avr=np.average(expc_max_dist_stat)
 
 
@@ -322,16 +350,18 @@ hist_sort=sorted(hist.items(), key=operator.itemgetter(1), reverse=True)
 #convert to edges list and pick the top one
 high_freq_edge = ast.literal_eval(hist_sort[0][0])
 
-#recover this graph
+#recover this most  graph
 for (a,b) in high_freq_edge:
     distance(a, b)
 #plot the most probable graph  
 nx.draw(FG, with_labels=True)
 plt.show()
 
-
-     
-
-#already moved test parts to test file
-#tests =  unittest.TestLoader().loadTestsFromTestCase(Test_markov)
-#unittest.TextTestRunner().run(tests)
+#output average figure
+plt.plot(edgeto0_avr, label='edges connected to 0')
+plt.plot(edges_avr, label='total edges')
+plt.plot(max_dist_avr, label='maximum distance')
+pylab.legend(loc='best')
+plt.title('average values')
+plt.xlabel('time step')
+plt.show()
