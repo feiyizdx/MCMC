@@ -34,7 +34,7 @@ How to use
 * the code generates a m*m 2D grid, origin is 0, dx=dy=1. For example, if m=3, meaning we have 3 nodes and a 3*3 grid. We can initialize the nodes by init.coor([2,1,1],[1,0,1]). The first, second, and third nodes are located at (2,1), (1,0), (1,1), respectively.
 Features
 --------
-* This is a Markov Chain Monte Carlo code to estimate the graphs that arise in a distribution network. The Markov Chain is a sequence of graphs. We do not know the transition probability matrix, but we can compute the relative probability of two graphs. See more description in project_description.pdf 
+* This is a Markov Chain Monte Carlo code to estimate the graphs that arise in a distribution network. The Markov Chain is a sequence of graphs. We do not know the transition probability matrix, but we can compute the relative probability of two graphs. See more description in problem_description. 
 * The code employs Metropolis-Hastings Algorithm
 * The proposal probability is based on randomly cutting/adding an edge. There are three cases, 'no cut' case, 'no add' case and normal case.
 
