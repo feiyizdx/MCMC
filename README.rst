@@ -29,20 +29,20 @@ Markov Chain Monte Carlo Project
 * Documentation: https://markov.readthedocs.io.
 How to use
 --------
-* run the code  /markov/markov.py
+* run the code /markov/markov.py
 * the input parameters are steps (istep), weights related parameters T and r (T, r), total nodes number (m), the nodes location in the 2-D grid (init.coor([_,_,...], [_,_,...]))
 * the code generates a m*m 2D grid, origin is 0, dx=dy=1. For example, if m=3, meaning we have 3 nodes and a 3*3 grid. We can initialize the nodes by init.coor([2,1,1],[1,0,1]). The first, second, and third nodes are located at (2,1), (1,0), (1,1), respectively.
 Features
 --------
-* This is a Markov Chain Monte Carlo code for CHE477 project
+* This is a Markov Chain Monte Carlo code to estimate the graphs that arise in a distribution network. The Markov Chain is a sequence of graphs. We do not know the transition probability matrix, but we can compute the relative probability of two graphs. See more description in project_description.pdf 
 * The code employs Metropolis-Hastings Algorithm
-* The proposal probability is based on randomly cutting/adding an edge. There are three cases, 'cannot cut' case, 'cannot add' case and normal case.
+* The proposal probability is based on randomly cutting/adding an edge. There are three cases, 'no cut' case, 'no add' case and normal case.
 
-1. 'Cannot cut' case. If the graph is disconnected by further cutting any edges, it is the so called 'cannot cut' case. Thus, the probability of adding an edge is 1. 
+1. 'no cut' case. If the graph is disconnected by further cutting any edges, it is the so called 'no cut' case. Thus, the probability of adding an edge is 1. 
  1. P(j|i)=1/(total possible edges - edges already exist).
- 2. We need to cut an edge to go back to previous graph. After adding an edge, if it becomes 'cannot add' case, P(i|j)=1/(existing edges - edges cannot be cut). After adding an edge, if it is a normal case, P(i|j)=0.5/(existing edges - edges cannot be cut)
+ 2. We need to cut an edge to go back to previous graph. After adding an edge, if it becomes 'no add' case, P(i|j)=1/(existing edges - edges cannot be cut). After adding an edge, if it is a normal case, P(i|j)=0.5/(existing edges - edges cannot be cut)
 
-2. 'Cannot add' case. If the graph cannot add any more edges, it is 'cannot add' case. The probability of removing an edge is 1.
+2. 'no add' case. If the graph cannot add any more edges, it is 'no add' case. The probability of removing an edge is 1.
  1. P(j|i)=1/(existing edges - edges cannot be removed)
  2. We need to add an edge to go back to previous graph. After cutting, if it becomes cannot cut case, P(i|j)=1/(total possible edges - edges already exist). If it's normal case, P(i|j)=1/(total possible edges - existing edges). 
 
